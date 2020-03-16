@@ -8,7 +8,7 @@ module Legion::Extensions::Lex
       def create(runner_id:, name:, active: 1, **opts)
         exist = Legion::Data::Model::Function.where(name: name.to_s).where(runner_id: runner_id).first
         unless exist.nil?
-          log.debug "function: #{exist.values[:id]} already exists, updated it"
+          log.debug "function: #{exist.values[:id]} already exists, updating it"
           update_hash = { function_id: exist.values[:id], name: name, active: active, **opts }
           return Legion::Runner.run(runner_class: 'Legion::Extensions::Lex::Runners::Function',
                                     function: 'update',
@@ -17,10 +17,9 @@ module Legion::Extensions::Lex
                                     master_id: opts[:master_id])
         end
         insert = { runner_id: runner_id, name: name.to_s, active: active }
-        insert[:uri] = opts.key?(:uri) ? opts[:uri] : name.to_s
-        insert[:args] = opts[:formatted_args] if opts.key? :formatted_args
-        result = Legion::Data::Model::Function.insert(insert)
-        { success: true, function_id: result }
+        insert[:args] = Legion::JSON.dump(opts[:formatted_args]) if opts.key? :formatted_args
+
+        { success: true, function_id: Legion::Data::Model::Function.insert(insert) }
       end
 
       def update(function_id:, **opts)
@@ -33,23 +32,21 @@ module Legion::Extensions::Lex
           update[:args] = args unless args == function.values[:args]
         end
 
-        if update.count.zero?
-          return { success: true, changed: false, function_id: function_id }
-        end
+        return { success: true, changed: false, function_id: function_id } if update.count.zero?
 
         function.update(update)
         { success: true, changed: true, updates: update, function_id: function_id }
       end
 
-      def get(function_id:, **_opts)
+      def get(function_id:, **opts)
         { function_id: function_id, values: Legion::Data::Model::Function[function_id].values }
       end
 
-      def delete(function_id:, **_opts)
+      def delete(function_id:, **opts)
         { function_id: function_id, result: Legion::Data::Model::Function[function_id].delete }
       end
 
-      def self.build_args(raw_args:, **_opts)
+      def self.build_args(raw_args:, **opts)
         args = {}
         raw_args.each do |arg|
           args[arg[1]] = arg[0] unless %w[opts options].include? arg[1]

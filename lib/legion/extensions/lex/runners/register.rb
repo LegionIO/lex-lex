@@ -38,6 +38,8 @@ module Legion::Extensions::Lex
             build_args_hash = { master_id: master_id, parent_id: runner[:task_id], raw_args: values[:args] }
             args = Legion::Runner.run(runner_class: 'Legion::Extensions::Lex::Runners::Function',
                                       function: 'build_args',
+                                      generate_task: false,
+                                      check_subtask: false,
                                       args: build_args_hash,
                                       parent_id: runner[:task_id],
                                       master_id: master_id)
@@ -51,10 +53,6 @@ module Legion::Extensions::Lex
           end
         end
         { success: true }
-      rescue StandardError => e
-        Legion::Logging.fatal e.message
-        Legion::Logging.fatal e.backtrace
-        raise(e)
       end
     end
   end
