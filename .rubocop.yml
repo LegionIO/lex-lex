@@ -1,0 +1,23 @@
+Metrics/LineLength:
+  Max: 120
+Metrics/MethodLength:
+  Max: 55
+Metrics/ClassLength:
+  Max: 1500
+Metrics/BlockLength:
+  Max: 75
+Metrics/AbcSize:
+  Max: 36
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: space
+Style/SymbolArray:
+  Enabled: true
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+Style/Documentation:
+  Enabled: false
+AllCops:
+  TargetRubyVersion: 2.5
+Style/FrozenStringLiteralComment:
+  Enabled: false
