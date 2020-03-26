@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Legion::Extensions::Lex
+module Legion::Extensions::Lex # rubocop:disable Style/ClassAndModuleChildren
   module Runners
     module Runner
       include Legion::Extensions::Helpers::Lex
@@ -10,10 +10,10 @@ module Legion::Extensions::Lex
         unless exist.nil?
           update_hash = { runner_id: exist.values[:id], name: name, active: active, **opts }
           return Legion::Runner.run(runner_class: 'Legion::Extensions::Lex::Runners::Runner',
-                                    function: 'update',
-                                    args: update_hash,
-                                    parent_id: opts[:task_id],
-                                    master_id: opts[:master_id])
+                                    function:     'update',
+                                    args:         update_hash,
+                                    parent_id:    opts[:task_id],
+                                    master_id:    opts[:master_id])
         end
         insert = { extension_id: extension_id, name: name.to_s, active: active, namespace: opts[:namespace] }
         insert[:queue] = opts.key?(:queue) ? opts[:queue] : name.to_s
@@ -31,20 +31,17 @@ module Legion::Extensions::Lex
           update[column] = opts[column]
         end
 
-        if update.count.zero?
-          { success: true, changed: false, runner_id: runner_id }
-        end
+        { success: true, changed: false, runner_id: runner_id } if update.count.zero?
         runner.update(update)
         { success: true, changed: true, updates: update, runner_id: runner_id }
       end
 
-      def get(runner_id:, **opts)
+      def get(runner_id:, **_opts)
         Legion::Data::Model::Runner[runner_id].values
       end
 
-      def delete(runner_id:, **opts)
-        runner = Legion::Data::Model::Runner[runner_id].delete
-        { runner_id: runner_id }
+      def delete(runner_id:, **_opts)
+        { runner_id: runner_id, result: Legion::Data::Model::Runner[runner_id].delete }
       end
     end
   end

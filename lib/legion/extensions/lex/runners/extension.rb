@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Legion::Extensions::Lex
+module Legion::Extensions::Lex # rubocop:disable Style/ClassAndModuleChildren
   module Runners
     module Extension
       include Legion::Extensions::Helpers::Lex
@@ -10,10 +10,10 @@ module Legion::Extensions::Lex
         unless exist.nil?
           update_hash = { extension_id: exist.values[:id], namespace: namespace, **opts }
           return Legion::Runner.run(runner_class: to_s,
-                                    function: 'update',
-                                    args: update_hash,
-                                    parent_id: opts[:task_id],
-                                    master_id: opts[:master_id] || opts[:task_id])[:result]
+                                    function:     'update',
+                                    args:         update_hash,
+                                    parent_id:    opts[:task_id],
+                                    master_id:    opts[:master_id] || opts[:task_id])[:result]
         end
 
         insert = { name: name, namespace: namespace, active: active }
@@ -32,9 +32,7 @@ module Legion::Extensions::Lex
           update[column] = opts[column]
         end
 
-        if update.count.zero?
-          { success: true, changed: false, extension_id: extension_id }
-        end
+        { success: true, changed: false, extension_id: extension_id } if update.count.zero?
         extension.update(update)
         { success: true, changed: true, updates: update, extension_id: extension_id }
       end

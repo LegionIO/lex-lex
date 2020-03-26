@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Legion::Extensions::Lex
+module Legion::Extensions::Lex # rubocop:disable Style/ClassAndModuleChildren
   module Runners
     module Function
       include Legion::Extensions::Helpers::Lex
@@ -11,10 +11,10 @@ module Legion::Extensions::Lex
           log.debug "function: #{exist.values[:id]} already exists, updating it"
           update_hash = { function_id: exist.values[:id], name: name, active: active, **opts }
           return Legion::Runner.run(runner_class: 'Legion::Extensions::Lex::Runners::Function',
-                                    function: 'update',
-                                    args: update_hash,
-                                    parent_id: opts[:task_id],
-                                    master_id: opts[:master_id])
+                                    function:     'update',
+                                    args:         update_hash,
+                                    parent_id:    opts[:task_id],
+                                    master_id:    opts[:master_id])
         end
         insert = { runner_id: runner_id, name: name.to_s, active: active }
         insert[:args] = Legion::JSON.dump(opts[:formatted_args]) if opts.key? :formatted_args
@@ -38,15 +38,15 @@ module Legion::Extensions::Lex
         { success: true, changed: true, updates: update, function_id: function_id }
       end
 
-      def get(function_id:, **opts)
+      def get(function_id:, **_opts)
         { function_id: function_id, values: Legion::Data::Model::Function[function_id].values }
       end
 
-      def delete(function_id:, **opts)
+      def delete(function_id:, **_opts)
         { function_id: function_id, result: Legion::Data::Model::Function[function_id].delete }
       end
 
-      def self.build_args(raw_args:, **opts)
+      def self.build_args(raw_args:, **_opts)
         args = {}
         raw_args.each do |arg|
           args[arg[1]] = arg[0] unless %w[opts options].include? arg[1]
