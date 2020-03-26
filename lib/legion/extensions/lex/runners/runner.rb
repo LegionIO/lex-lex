@@ -38,9 +38,14 @@ module Legion::Extensions::Lex
         { success: true, changed: true, updates: update, runner_id: runner_id }
       end
 
-      def get(**opts); end
+      def get(runner_id:, **opts)
+        Legion::Data::Model::Runner[runner_id].values
+      end
 
-      def delete(**opts); end
+      def delete(runner_id:, **opts)
+        runner = Legion::Data::Model::Runner[runner_id].delete
+        { runner_id: runner_id }
+      end
     end
   end
 end
