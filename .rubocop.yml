@@ -1,4 +1,4 @@
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 Metrics/MethodLength:
   Max: 55
@@ -7,7 +7,7 @@ Metrics/ClassLength:
 Metrics/BlockLength:
   Max: 75
 Metrics/AbcSize:
-  Max: 36
+  Max: 50
 Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: space
 Style/SymbolArray:
@@ -19,5 +19,6 @@ Style/Documentation:
   Enabled: false
 AllCops:
   TargetRubyVersion: 2.5
+  NewCops: enable
 Style/FrozenStringLiteralComment:
   Enabled: false

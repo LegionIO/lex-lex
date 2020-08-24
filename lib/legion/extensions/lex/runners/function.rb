@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Legion::Extensions::Lex # rubocop:disable Style/ClassAndModuleChildren
   module Runners
     module Function

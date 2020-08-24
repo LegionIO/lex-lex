@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'legion/extensions/lex/version'
 require 'legion/extensions'
 
