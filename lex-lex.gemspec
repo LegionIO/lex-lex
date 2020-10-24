@@ -16,7 +16,9 @@ Gem::Specification.new do |spec|
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://bitbucket.org/legion-io/lex-lex'
-  spec.metadata['changelog_uri'] = 'https://bitbucket.org/legion-io/lex-lex'
+  spec.metadata['documentation_uri'] = 'https://legionio.atlassian.net/wiki/spaces/LEX/pages/612270215'
+  spec.metadata['changelog_uri'] = 'https://legionio.atlassian.net/wiki/spaces/LEX/pages/614891616'
+  spec.metadata['bug_tracker_uri'] = 'https://bitbucket.org/legion-io/lex-lex/issues'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
