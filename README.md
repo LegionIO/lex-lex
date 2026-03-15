@@ -1,40 +1,40 @@
-# Legion::Extensions::Lex
+# lex-lex
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/legion/extensions/lex`. To experiment with that code, run `bin/console` for an interactive prompt.
+Extension registry for [LegionIO](https://github.com/LegionIO). Persists extension, runner, and function metadata to the database when LEX gems load.
 
-TODO: Delete this and the text above, and describe your gem
+## What It Does
 
-## Installation
+When LegionIO loads extensions, it publishes `LexRegister` messages to RabbitMQ. This extension:
 
-Add this line to your application's Gemfile:
+1. **Consumes** those messages via a subscription actor
+2. **Persists** extension/runner/function records to `legion-data` models
+3. **Syncs** in-memory extension state with the database on startup
 
-```ruby
-gem 'legion-extensions-lex'
-```
+Without lex-lex, the REST API (`/api/extensions`), MCP tools (`legion.list_extensions`), and CLI (`legion lex list`) return empty results.
 
-And then execute:
+## Runners
 
-    $ bundle install
+| Runner | Methods | Purpose |
+|--------|---------|---------|
+| Extension | create, update, get, delete | CRUD for extensions |
+| Runner | create, update, get, delete | CRUD for runners |
+| Function | create, update, get, delete, build_args | CRUD for functions + arg schema |
+| Register | save | Persist full extension descriptor |
+| Sync | sync | Reconcile in-memory state with DB |
 
-Or install it yourself as:
+## Requirements
 
-    $ gem install legion-extensions-lex
-
-## Usage
-
-TODO: Write usage instructions here
+- Ruby >= 3.4
+- `legion-data` must be connected (`data_required? true`)
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/legion-extensions-lex.
-
+```bash
+bundle install
+bundle exec rspec
+bundle exec rubocop
+```
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+MIT

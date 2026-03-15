@@ -1,13 +1,20 @@
-require 'legion/extensions/lex/version'
+# frozen_string_literal: true
+
+require_relative 'lex/version'
+require_relative 'lex/runners/extension'
+require_relative 'lex/runners/runner'
+require_relative 'lex/runners/function'
+require_relative 'lex/runners/register'
+require_relative 'lex/runners/sync'
 
 module Legion
   module Extensions
     module Lex
-      extend Legion::Extensions::Core if Legion::Extensions.const_defined? :Core
-    end
+      extend Legion::Extensions::Core if Legion::Extensions.const_defined?(:Core)
 
-    def data_required?
-      true
+      def data_required?
+        true
+      end
     end
   end
 end

@@ -8,26 +8,28 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Esity']
   spec.email         = ['matthewdiverson@gmail.com']
 
-  spec.summary       = 'Lex::Lex manages Legion Extensions'
-  spec.description   = 'Used by Legion to keep track of which LEXs are installed and available in the cluster'
-  spec.homepage      = 'https://bitbucket.org/legion-io'
+  spec.summary       = 'Legion Extension Registry'
+  spec.description   = 'Persists extension, runner, and function metadata to the database when LEX gems load'
+  spec.homepage      = 'https://github.com/LegionIO/lex-lex'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
+  spec.required_ruby_version = '>= 3.4'
 
-  spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://bitbucket.org/legion-io/lex-lex'
-  spec.metadata['documentation_uri'] = 'https://legionio.atlassian.net/wiki/spaces/LEX/pages/612270215'
-  spec.metadata['changelog_uri'] = 'https://legionio.atlassian.net/wiki/spaces/LEX/pages/614891616'
-  spec.metadata['bug_tracker_uri'] = 'https://bitbucket.org/legion-io/lex-lex/issues'
+  spec.metadata['homepage_uri']        = spec.homepage
+  spec.metadata['source_code_uri']     = 'https://github.com/LegionIO/lex-lex'
+  spec.metadata['changelog_uri']       = 'https://github.com/LegionIO/lex-lex'
+  spec.metadata['documentation_uri']   = 'https://github.com/LegionIO/lex-lex'
+  spec.metadata['bug_tracker_uri']     = 'https://github.com/LegionIO/lex-lex/issues'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '>= 2'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rspec', '~> 3.13'
+  spec.add_development_dependency 'rspec_junit_formatter'
+  spec.add_development_dependency 'rubocop', '~> 1.75'
+  spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'simplecov'
 end
