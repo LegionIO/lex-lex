@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.1] - 2026-03-17
+
+### Fixed
+- Remove debug `false` return in Sync actor `enabled?` that prevented sync from ever running
+
 ## [0.2.0] - 2026-03-14
 
 ### Added
