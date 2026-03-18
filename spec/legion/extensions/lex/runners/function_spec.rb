@@ -113,5 +113,22 @@ RSpec.describe Legion::Extensions::Lex::Runners::Function do
       expect(result[:success]).to be true
       expect(result[:formatted_args]).to eq({})
     end
+
+    it 'handles parameter tuples with no name (nil at index 1)' do
+      raw_args = [[:rest]]
+      result = runner.build_args(raw_args: raw_args)
+      expect(result[:success]).to be true
+      expect(result[:formatted_args]).not_to have_key(:opts)
+      expect(result[:formatted_args]).not_to have_key(:options)
+    end
+  end
+
+  describe '#update — name is not a writable column' do
+    it 'silently ignores name kwarg and does not change the stored name' do
+      create_result = runner.create(runner_id: runner_id, name: 'get')
+      runner.update(function_id: create_result[:function_id], name: 'new_name')
+      record = Legion::Data::Model::Function[create_result[:function_id]]
+      expect(record.values[:name]).to eq 'get'
+    end
   end
 end

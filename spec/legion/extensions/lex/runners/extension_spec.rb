@@ -73,6 +73,13 @@ RSpec.describe Legion::Extensions::Lex::Runners::Extension do
       result = runner.get(name: 'nonexistent')
       expect(result[:success]).to be false
     end
+
+    it 'retrieves by namespace' do
+      runner.create(name: 'http', namespace: 'Legion::Extensions::Http')
+      result = runner.get(namespace: 'Legion::Extensions::Http')
+      expect(result[:success]).to be true
+      expect(result[:values][:name]).to eq 'http'
+    end
   end
 
   describe '#delete' do
