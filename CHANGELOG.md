@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0] - 2026-03-18
+
+### Fixed
+- `data_required?` now correctly overrides Core default (was instance method, framework ignored it)
+- Sync runner only increments update counter on actual DB writes
+- Sync runner no longer re-enables intentionally disabled extensions
+- Register.save guards against nil extension_id after creation failure
+
+### Changed
+- Renamed shadowed `update` local variables to `changes` in Extension, Runner, Function modules
+
 ## [0.2.1] - 2026-03-17
 
 ### Fixed

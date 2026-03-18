@@ -12,7 +12,7 @@ Without lex-lex, the extensions/runners/functions DB tables remain empty, and th
 
 **GitHub**: https://github.com/LegionIO/lex-lex
 **License**: MIT
-**Version**: 0.2.1
+**Version**: 0.3.0
 
 ## Architecture
 
@@ -55,7 +55,7 @@ Startup (after all extensions load):
 | Path | Purpose |
 |------|---------|
 | `lib/legion/extensions/lex.rb` | Entry point, requires all runners |
-| `lib/legion/extensions/lex/version.rb` | VERSION constant (0.2.1) |
+| `lib/legion/extensions/lex/version.rb` | VERSION constant (0.3.0) |
 | `lib/legion/extensions/lex/runners/extension.rb` | Extension CRUD |
 | `lib/legion/extensions/lex/runners/runner.rb` | Runner CRUD |
 | `lib/legion/extensions/lex/runners/function.rb` | Function CRUD + build_args |

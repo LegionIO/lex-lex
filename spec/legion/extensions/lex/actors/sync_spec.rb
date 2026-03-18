@@ -4,7 +4,7 @@ unless defined?(Legion::Extensions::Actors::Once)
   module Legion
     module Extensions
       module Actors
-        class Once; end
+        class Once; end # rubocop:disable Lint/EmptyClass
       end
     end
   end
