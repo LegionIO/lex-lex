@@ -33,8 +33,10 @@ module Legion
                 created += 1
               else
                 ns = values[:extension_class].to_s
-                existing.update(namespace: ns, active: true) if existing.values[:namespace] != ns
-                updated += 1
+                if existing.values[:namespace] != ns
+                  existing.update(namespace: ns)
+                  updated += 1
+                end
               end
               synced += 1
             end

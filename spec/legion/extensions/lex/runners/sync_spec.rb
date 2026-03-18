@@ -60,14 +60,32 @@ RSpec.describe Legion::Extensions::Lex::Runners::Sync do
         expect(result[:created]).to eq 1
       end
 
-      it 'does not update when namespace matches' do
+      it 'does not count updated when namespace matches' do
         Legion::Data::Model::Extension.insert(
           name: 'http', namespace: 'Legion::Extensions::Http', active: true, exchange: 'http', uri: 'http'
         )
         result = runner.sync
-        expect(result[:updated]).to eq 1
+        expect(result[:updated]).to eq 0
         record = Legion::Data::Model::Extension.where(name: 'http').first
         expect(record.values[:namespace]).to eq 'Legion::Extensions::Http'
+      end
+
+      it 'does not re-enable a disabled extension when namespace matches' do
+        Legion::Data::Model::Extension.insert(
+          name: 'http', namespace: 'Legion::Extensions::Http', active: false, exchange: 'http', uri: 'http'
+        )
+        runner.sync
+        record = Legion::Data::Model::Extension.where(name: 'http').first
+        expect(record.values[:active]).to be false
+      end
+
+      it 'does not re-enable a disabled extension when namespace differs' do
+        Legion::Data::Model::Extension.insert(
+          name: 'http', namespace: 'Legion::Extensions::OldHttp', active: false, exchange: 'http', uri: 'http'
+        )
+        runner.sync
+        record = Legion::Data::Model::Extension.where(name: 'http').first
+        expect(record.values[:active]).to be false
       end
 
       it 'skips extensions not in the loaded list' do
