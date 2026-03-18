@@ -22,18 +22,18 @@ module Legion
             function = Legion::Data::Model::Function[function_id]
             return { success: false, reason: 'function not found' } if function.nil?
 
-            update = {}
-            update[:active] = opts[:active] if opts.key?(:active) && function.values[:active] != opts[:active]
+            changes = {}
+            changes[:active] = opts[:active] if opts.key?(:active) && function.values[:active] != opts[:active]
 
             if opts.key?(:formatted_args)
               args = Legion::JSON.dump(opts[:formatted_args])
-              update[:args] = args unless args == function.values[:args]
+              changes[:args] = args unless args == function.values[:args]
             end
 
-            return { success: true, changed: false, function_id: function_id } if update.empty?
+            return { success: true, changed: false, function_id: function_id } if changes.empty?
 
-            function.update(update)
-            { success: true, changed: true, updates: update, function_id: function_id }
+            function.update(changes)
+            { success: true, changed: true, updates: changes, function_id: function_id }
           end
 
           def get(function_id:, **_opts)

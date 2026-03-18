@@ -22,6 +22,8 @@ module Legion
                   name:      runner_opts[:extension_name],
                   namespace: runner_opts[:extension_class].to_s
                 )
+                return { success: false, error: 'extension creation failed' } if ext_result[:extension_id].nil?
+
                 extension_id = ext_result[:extension_id]
               end
 

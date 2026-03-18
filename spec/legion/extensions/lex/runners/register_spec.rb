@@ -87,5 +87,12 @@ RSpec.describe Legion::Extensions::Lex::Runners::Register do
       runner.save(opts: opts)
       expect(Legion::Data::Model::Extension.records.size).to eq 1
     end
+
+    it 'returns failure without crashing when Extension.create returns success: false' do
+      allow(Legion::Extensions::Lex::Runners::Extension).to receive(:create).and_return({ success: false })
+      result = runner.save(opts: opts)
+      expect(result[:success]).to be false
+      expect(result[:error]).to eq 'extension creation failed'
+    end
   end
 end

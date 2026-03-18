@@ -22,18 +22,18 @@ module Legion
             extension = Legion::Data::Model::Extension[extension_id]
             return { success: false, reason: 'extension not found' } if extension.nil?
 
-            update = {}
+            changes = {}
             %i[name namespace active exchange uri].each do |column|
               next unless opts.key?(column)
               next if extension.values[column] == opts[column]
 
-              update[column] = opts[column]
+              changes[column] = opts[column]
             end
 
-            return { success: true, changed: false, extension_id: extension_id } if update.empty?
+            return { success: true, changed: false, extension_id: extension_id } if changes.empty?
 
-            extension.update(update)
-            { success: true, changed: true, updates: update, extension_id: extension_id }
+            extension.update(changes)
+            { success: true, changed: true, updates: changes, extension_id: extension_id }
           end
 
           def get(extension_id: nil, name: nil, namespace: nil, **_opts)

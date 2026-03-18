@@ -27,18 +27,18 @@ module Legion
             runner = Legion::Data::Model::Runner[runner_id]
             return { success: false, reason: 'runner not found' } if runner.nil?
 
-            update = {}
+            changes = {}
             %i[name namespace active queue uri].each do |column|
               next unless opts.key?(column)
               next if runner.values[column] == opts[column]
 
-              update[column] = opts[column]
+              changes[column] = opts[column]
             end
 
-            return { success: true, changed: false, runner_id: runner_id } if update.empty?
+            return { success: true, changed: false, runner_id: runner_id } if changes.empty?
 
-            runner.update(update)
-            { success: true, changed: true, updates: update, runner_id: runner_id }
+            runner.update(changes)
+            { success: true, changed: true, updates: changes, runner_id: runner_id }
           end
 
           def get(runner_id:, **_opts)
