@@ -12,7 +12,7 @@ module Legion
     module Lex
       extend Legion::Extensions::Core if Legion::Extensions.const_defined?(:Core)
 
-      def data_required?
+      def self.data_required?
         true
       end
     end
