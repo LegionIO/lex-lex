@@ -67,7 +67,7 @@ Startup (after all extensions load):
 
 ```bash
 bundle install
-bundle exec rspec     # 55 specs
+bundle exec rspec     # 71 specs, 0 failures
 bundle exec rubocop   # 0 offenses
 ```
 
