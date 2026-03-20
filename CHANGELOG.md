@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1] - 2026-03-20
+
+### Added
+- `Actor::AgentWatcher` — interval actor (every 30s) that detects file modifications to loaded YAML agent definitions and triggers hot-reload via `Legion::Extensions.load_yaml_agents`
+- Conditional require of `AgentWatcher` in entry point (only when `Legion::Extensions::Actors::Every` is available)
+
 ## [0.3.0] - 2026-03-18
 
 ### Fixed
