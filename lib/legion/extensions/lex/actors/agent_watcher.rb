@@ -5,6 +5,10 @@ module Legion
     module Lex
       module Actor
         class AgentWatcher < Legion::Extensions::Actors::Every
+          def runner_class
+            self.class
+          end
+
           def time = 30
           def run_now? = false
           def use_runner? = false
