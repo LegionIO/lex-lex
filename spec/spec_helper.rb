@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'legion/logging'
+require 'legion/json'
+require 'legion/settings'
 
-# Stub Legion modules before requiring the extension
+# Stub Legion::Extensions hierarchy before requiring the extension
 module Legion
   module Extensions
     module Helpers
@@ -32,31 +35,6 @@ module Legion
 
     def self.instance_variable_get(_name)
       nil
-    end
-  end
-
-  module Settings
-    def self.[](_key)
-      { connected: false }
-    end
-  end
-
-  module Logging
-    def self.info(*); end
-    def self.debug(*); end
-    def self.warn(*); end
-    def self.error(*); end
-  end
-
-  module JSON
-    def self.dump(obj)
-      require 'json'
-      ::JSON.dump(obj)
-    end
-
-    def self.load(str)
-      require 'json'
-      ::JSON.parse(str, symbolize_names: true)
     end
   end
 end

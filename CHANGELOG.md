@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.3] - 2026-03-22
+
+### Changed
+- Add runtime dependencies to gemspec: legion-cache, legion-crypt, legion-data, legion-json, legion-logging, legion-settings, legion-transport
+- Replace hand-rolled stubs in spec_helper with real sub-gem requires (legion-logging, legion-json, legion-settings)
+
 ## [0.3.2] - 2026-03-20
 
 ### Fixed
