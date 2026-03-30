@@ -4,12 +4,12 @@ module Legion
   module Extensions
     module Lex
       module Runners
-        module Runner
+        module Runner # rubocop:disable Legion/Extension/RunnerPluralModule
           include Legion::Extensions::Helpers::Lex if defined?(Legion::Extensions::Helpers::Lex)
 
           def create(extension_id:, name:, active: true, **opts)
             existing = Legion::Data::Model::Runner.where(name: name.to_s, extension_id: extension_id).first
-            return update(runner_id: existing.values[:id], name: name, active: active, **opts) if existing
+            return update(runner_id: existing.values[:id], name: name, active: active, **opts) if existing # rubocop:disable Legion/Extension/RunnerReturnHash
 
             insert = {
               extension_id: extension_id,

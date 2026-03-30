@@ -4,7 +4,7 @@ module Legion
   module Extensions
     module Lex
       module Actor
-        class AgentWatcher < Legion::Extensions::Actors::Every
+        class AgentWatcher < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
           def runner_class
             self.class
           end

@@ -9,7 +9,7 @@ module Legion
 
           def create(name:, namespace:, active: true, **opts)
             existing = Legion::Data::Model::Extension.where(name: name).first
-            return update(extension_id: existing.values[:id], namespace: namespace, active: active, **opts) if existing
+            return update(extension_id: existing.values[:id], namespace: namespace, active: active, **opts) if existing # rubocop:disable Legion/Extension/RunnerReturnHash
 
             insert = { name: name, namespace: namespace, active: active }
             insert[:exchange] = opts.fetch(:exchange, name)

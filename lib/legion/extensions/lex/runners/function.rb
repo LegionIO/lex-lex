@@ -7,12 +7,14 @@ module Legion
         module Function
           include Legion::Extensions::Helpers::Lex if defined?(Legion::Extensions::Helpers::Lex)
 
+          RESERVED_ARG_NAMES = %w[opts options].freeze
+
           def create(runner_id:, name:, active: true, **opts)
             existing = Legion::Data::Model::Function.where(name: name.to_s, runner_id: runner_id).first
-            return update(function_id: existing.values[:id], name: name, active: active, **opts) if existing
+            return update(function_id: existing.values[:id], name: name, active: active, **opts) if existing # rubocop:disable Legion/Extension/RunnerReturnHash
 
             insert = { runner_id: runner_id, name: name.to_s, active: active }
-            insert[:args] = Legion::JSON.dump(opts[:formatted_args]) if opts.key?(:formatted_args)
+            insert[:args] = json_dump(opts[:formatted_args]) if opts.key?(:formatted_args)
 
             id = Legion::Data::Model::Function.insert(insert)
             { success: true, function_id: id }
@@ -26,7 +28,7 @@ module Legion
             changes[:active] = opts[:active] if opts.key?(:active) && function.values[:active] != opts[:active]
 
             if opts.key?(:formatted_args)
-              args = Legion::JSON.dump(opts[:formatted_args])
+              args = json_dump(opts[:formatted_args])
               changes[:args] = args unless args == function.values[:args]
             end
 
@@ -54,7 +56,7 @@ module Legion
           def build_args(raw_args:, **_opts)
             args = {}
             raw_args.each do |arg|
-              args[arg[1]] = arg[0] unless %w[opts options].include?(arg[1].to_s)
+              args[arg[1]] = arg[0] unless RESERVED_ARG_NAMES.include?(arg[1].to_s)
             end
             { success: true, formatted_args: args }
           end
