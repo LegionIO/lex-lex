@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.4] - 2026-03-29
+
+### Fixed
+- Add transport layer with queue bound to Extensions exchange (routing key `extension_manager.register.#`), fixing LexRegister messages being published but never consumed
+
 ## [0.3.3] - 2026-03-22
 
 ### Changed
