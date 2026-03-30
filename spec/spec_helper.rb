@@ -21,6 +21,10 @@ module Legion
         include Legion::Extensions::Helpers::Core
         include Legion::Extensions::Helpers::Logger
 
+        def json_dump(obj)
+          Legion::JSON.dump(obj)
+        end
+
         def self.included(base)
           base.extend base if base.instance_of?(Module)
         end
@@ -29,7 +33,12 @@ module Legion
 
     module Core; end
 
-    def self.const_defined?(_name)
+    module Actors
+      class Every; end # rubocop:disable Lint/EmptyClass
+      class Once; end # rubocop:disable Lint/EmptyClass
+    end
+
+    def self.const_defined?(*_args)
       false
     end
 
@@ -53,7 +62,7 @@ module Legion
     module Model
       class Extension
         class << self
-          attr_accessor :records
+          attr_accessor :records # rubocop:disable ThreadSafety/ClassAndModuleAttributes
 
           def reset!
             @records = []
@@ -107,12 +116,12 @@ module Legion
       end
 
       class Runner < Extension
-        @records = []
+        @records = [].freeze
         @next_id = 0
       end
 
       class Function < Extension
-        @records = []
+        @records = [].freeze
         @next_id = 0
       end
     end

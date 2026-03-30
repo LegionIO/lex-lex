@@ -27,11 +27,11 @@ module Legion
             false
           end
 
-          def enabled?
+          def enabled? # rubocop:disable Legion/Extension/ActorEnabledSideEffects
             return false unless defined?(Legion::Settings)
 
             Legion::Settings[:data][:connected] == true
-          rescue StandardError
+          rescue StandardError => _e
             false
           end
 

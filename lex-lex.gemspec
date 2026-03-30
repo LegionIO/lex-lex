@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.13'
   spec.add_development_dependency 'rspec_junit_formatter'
   spec.add_development_dependency 'rubocop', '~> 1.75'
+  spec.add_development_dependency 'rubocop-legion'
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'simplecov'
 end
