@@ -54,6 +54,8 @@ class NullLogger
   def info(*); end
   def warn(*); end
   def error(*); end
+  def fatal(*); end
+  def unknown(*); end
 end
 
 # Stub Sequel models

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.6] - 2026-05-27
+
+### Changed
+- Use Sequel static_cache for Extension/Runner/Function lookups in Register#save, eliminating per-message PG round-trips for existing records
+- Fall back to `.where` queries when static_cache plugin is not loaded (test environments)
+- Reload static caches after inserts/updates to keep in-memory state fresh
+
 ## [0.3.5] - 2026-03-30
 
 ### Changed
