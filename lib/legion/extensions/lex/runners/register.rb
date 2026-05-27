@@ -8,6 +8,9 @@ module Legion
           include Legion::Extensions::Helpers::Lex if defined?(Legion::Extensions::Helpers::Lex)
 
           def save(opts:, **_options)
+            log.unknown "save(opts: #{opts.class}, #{opts.length}, #{opts&.keys}"
+            log.unknown "full: #{opts}" if opts.empty?
+
             return { success: false, reason: 'no opts provided' } if opts.nil? || opts.empty?
 
             extension_id = nil

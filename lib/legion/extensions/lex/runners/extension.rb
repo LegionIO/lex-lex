@@ -8,13 +8,14 @@ module Legion
           include Legion::Extensions::Helpers::Lex if defined?(Legion::Extensions::Helpers::Lex)
 
           def create(name:, namespace:, active: true, **opts)
-            existing = Legion::Data::Model::Extension.where(name: name).first
+            existing = find_cached_extension(name)
             return update(extension_id: existing.values[:id], namespace: namespace, active: active, **opts) if existing # rubocop:disable Legion/Extension/RunnerReturnHash
 
             insert = { name: name, namespace: namespace, active: active }
             insert[:exchange] = opts.fetch(:exchange, name)
             insert[:uri] = opts.fetch(:uri, name)
             id = Legion::Data::Model::Extension.insert(insert)
+            reload_static_caches
             { success: true, extension_id: id }
           end
 
@@ -33,6 +34,7 @@ module Legion
             return { success: true, changed: false, extension_id: extension_id } if changes.empty?
 
             extension.update(changes)
+            reload_static_caches
             { success: true, changed: true, updates: changes, extension_id: extension_id }
           end
 
@@ -52,7 +54,25 @@ module Legion
             return { success: false, reason: 'not found' } if record.nil?
 
             record.delete
+            reload_static_caches
             { success: true, extension_id: extension_id }
+          end
+
+          private
+
+          def find_cached_extension(name)
+            model = Legion::Data::Model::Extension
+            if model.respond_to?(:cache) && model.respond_to?(:all)
+              model.all.find { |e| e.values[:name] == name }
+            else
+              model.where(name: name).first
+            end
+          end
+
+          def reload_static_caches
+            [Legion::Data::Model::Extension, Legion::Data::Model::Runner, Legion::Data::Model::Function].each do |m|
+              m.load_cache if m.respond_to?(:load_cache)
+            end
           end
         end
       end
