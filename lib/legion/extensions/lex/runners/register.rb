@@ -8,16 +8,41 @@ module Legion
           include Legion::Extensions::Helpers::Lex if defined?(Legion::Extensions::Helpers::Lex)
 
           def save(opts:, **_options)
-            log.unknown "save(opts: #{opts.class}, #{opts.length}, #{opts&.keys}"
-            log.unknown "full: #{opts}" if opts.empty?
+            # Normalize: support both single hash (legacy) and array of hashes (batched)
+            extensions_to_register = if opts.is_a?(Array)
+                                       opts.filter_map { |o| o.is_a?(Hash) ? o : nil }
+                                     elsif opts.is_a?(Hash) && !opts.empty?
+                                       [opts]
+                                     else
+                                       []
+                                     end
 
-            return { success: false, reason: 'no opts provided' } if opts.nil? || opts.empty?
+            return { success: false, reason: 'no opts provided' } if extensions_to_register.empty?
 
+            log.unknown "save(batch: #{extensions_to_register.length} extensions)"
+
+            total_runners = 0
+            total_functions = 0
+
+            extensions_to_register.each do |runner_hash|
+              result = register_single_extension(runner_hash)
+              if result[:success]
+                total_runners += result[:runners]
+                total_functions += result[:functions]
+              end
+            rescue StandardError => e
+              log.error "[Register] failed to register extension: #{e.message}"
+            end
+
+            { success: true, extensions: extensions_to_register.length, runners: total_runners, functions: total_functions }
+          end
+
+          def register_single_extension(runner_hash)
             extension_id = nil
             runners_created = 0
             functions_created = 0
 
-            opts.each do |runner_name, runner_opts|
+            runner_hash.each do |runner_name, runner_opts|
               next unless runner_opts.is_a?(Hash)
 
               if extension_id.nil?

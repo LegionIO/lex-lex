@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.7] - 2026-06-07
+
+### Performance
+- Register#save now handles batched extension registration (array of runner hashes), enabling a single `LexRegister` publish for all extensions during boot instead of one per extension
+
 ## [0.3.6] - 2026-05-27
 
 ### Changed
