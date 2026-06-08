@@ -19,6 +19,11 @@ module Legion
 
             return { success: false, reason: 'no opts provided' } if extensions_to_register.empty?
 
+            # Single-extension call: return the result directly (preserves extension_id for backward compat)
+            if extensions_to_register.length == 1
+              return register_single_extension(extensions_to_register.first)
+            end
+
             log.unknown "save(batch: #{extensions_to_register.length} extensions)"
 
             total_runners = 0
